@@ -1,0 +1,49 @@
+body {
+    color: white;
+    background-color: #000000;
+}
+
+
+.git-ico {
+    height: 25%;
+
+    position: absolute;
+    right: 25%;
+    bottom: 50%;
+
+    transform: translate(50%, 0%);
+    filter: invert(100%);
+}
+.crol-ico {
+    height: 35%;
+
+    position: absolute;
+    left: 25%;
+    bottom: 25%;
+
+    transform: translate(-50%, -50%);
+}
+
+.m {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background: linear-gradient(to right, #180000, #000000);
+
+    width: 50%;
+    height: 50%;
+
+    border-radius: 2rem;
+
+    border: solid 1px #200000;
+    box-shadow: 0 0 10rem #350000;
+
+    font-size: 1rem;
+
+    display: flex;
+
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+}
+
