@@ -1,2 +1,11 @@
-/dist
-/target
+node_modules
+.astro
+dist
+result
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
