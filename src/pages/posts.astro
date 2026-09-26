@@ -1,0 +1,131 @@
+---
+import "../styles/global.css";
+import Root from "../layouts/Root.astro";
+import Header from "../components/Header.astro";
+import Board from "../components/Board.astro";
+import { getPostsSorted } from "../lib/posts.ts";
+const posts = getPostsSorted();
+---
+
+<Root title="crolbar Posts">
+  <div class="contents">
+    <Header text="Posts" />
+
+    <div class="posts-cont">
+      {posts.map((p) => (
+        <a href={p.url}>
+          <Board class="post-board">
+            <div class="post-title-desc-cont">
+              <h3>{p.frontmatter.title}</h3>
+              <span>{p.frontmatter.description}</span>
+            </div>
+
+            <div class="tags-date-end-cont">
+              <div class="tags-end-cont">
+                <div class="tags-cont">
+                  {p.frontmatter.tags.map((t: string) => (
+                    <span class="tag">{t}</span>
+                  ))}
+                </div>
+
+                <div class="end-cont">
+                  <span class="status">
+                    {p.frontmatter.finished ? "Finished" : "Draft"}
+                  </span>
+                </div>
+              </div>
+              <span class="date">{p.frontmatter.publicationDate}</span>
+            </div>
+          </Board>
+        </a>
+      ))}
+    </div>
+  </div>
+</Root>
+
+<style>
+  .contents {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+  }
+  .posts-cont {
+    margin-top: 1.5rem;
+    gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .post-board {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
+
+    .post-title-desc-cont {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+
+      h3 {
+        margin: 0;
+        margin-bottom: 0.2rem;
+      }
+      span {
+        font-size: 0.78rem;
+        color: var(--fg2);
+      }
+    }
+
+    .tags-date-end-cont {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .tags-end-cont {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      height: 80%;
+    }
+
+    .tags-cont {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-content: flex-start;
+      gap: 1px;
+      width: 85%;
+      height: 100%;
+
+      .tag {
+        display: flex;
+        font-size: 0.75rem;
+        background-color: var(--bg4);
+        color: var(--fg2);
+        padding: 3px;
+        align-items: center;
+      }
+    }
+
+    .end-cont {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex: 1;
+
+      .status {
+        color: var(--fg3);
+        font-size: 0.7rem;
+        font-weight: 800;
+      }
+    }
+
+    .date {
+      margin-left: auto;
+      color: var(--fg2);
+      font-size: 0.7rem;
+    }
+  }
+</style>

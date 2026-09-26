@@ -1,0 +1,235 @@
+---
+import Root from "../layouts/Root.astro";
+import Header from "../components/Header.astro";
+import Projects from "../lib/projects-info.ts";
+import Board from "../components/Board.astro";
+import { Image } from "astro:assets";
+const images = import.meta.glob<ImageMetadata>(
+  "../images/*.{png,jpg,jpeg,webp}",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+import GhImg from "../images/github-svg.astro";
+import NoteImg from "../images/note-svg.astro";
+---
+
+<Root title="crolbar Projects">
+  <div class="contents">
+    <Header text="Projects" />
+
+    <span>
+      List of selected projects I've worked on. More can be found on my{" "}
+      <a href="https://github.com/crolbar">github page</a>!
+    </span>
+
+    <div class="grid">
+      {Projects.map((p) => (
+        <Board class="proj-board">
+          <div class="hero-cont">
+            <div>
+              <h3>{p.name}</h3>
+              <span>{p.description}</span>
+            </div>
+
+            <div class="hero-links">
+              {p.post && (
+                <a class="post-link" href={p.post}>
+                  <NoteImg />
+                </a>
+              )}
+              <a href={p.link}>
+                <GhImg />
+              </a>
+            </div>
+          </div>
+
+          <div class="tags-img-cont">
+            <div class="tags-date-cont">
+              <div class="tags-techs-cont">
+                <div>
+                  {p.tags.map((t) => (
+                    <span>{t}</span>
+                  ))}
+                </div>
+                <div>
+                  {p.technologies.map((t) => (
+                    <span>{t}</span>
+                  ))}
+                </div>
+              </div>
+              <span class="pub-date">{p.publicationDate}</span>
+            </div>
+
+            {p.image && (
+              <button
+                class="img-wrap"
+                style={`aspect-ratio: ${images[p.image].width} / ${images[p.image].height}`}
+              >
+                <Image class="img" src={images[p.image]} alt="crolbar-image" />
+              </button>
+            )}
+          </div>
+        </Board>
+      ))}
+    </div>
+  </div>
+
+  <dialog class="lightbox">
+    <Image
+      src={images["../images/crolbar1.png"]}
+      alt="crolbar-image"
+      loading="lazy"
+    />
+  </dialog>
+</Root>
+
+<style>
+  .contents {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    gap: 30px;
+  }
+  .grid {
+    display: grid;
+    gap: 5rem 2rem;
+    justify-items: stretch;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .proj-board {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-cont {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    h3 {
+      padding: 0.5rem;
+      margin: 0;
+    }
+    span {
+      color: var(--fg1);
+      font-size: 0.85rem;
+    }
+    .hero-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.5rem;
+
+      .post-link {
+        margin-top: 0.3rem;
+      }
+    }
+  }
+
+  .tags-img-cont {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    align-items: stretch;
+
+    .img-wrap {
+      position: relative;
+      align-self: stretch;
+      flex-shrink: 0;
+      min-width: 0;
+      flex: 0 1 auto;
+      background: none;
+      border: 0;
+      cursor: zoom-in;
+
+      img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .tags-date-cont {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .tags-techs-cont {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        max-width: 170px;
+        flex-wrap: wrap;
+
+        div {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1px;
+          font-size: 0.8rem;
+
+          span {
+            padding: 3px 5px;
+            color: var(--fg2);
+            font-size: 0.95rem;
+            background-color: var(--bg4);
+          }
+        }
+      }
+
+      .pub-date {
+        color: var(--fg3);
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+      }
+    }
+  }
+
+  .lightbox {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    margin: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .lightbox::backdrop {
+    background-color: black;
+    opacity: 0.7;
+  }
+
+  .lightbox img {
+    width: auto;
+    height: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+    cursor: zoom-out;
+  }
+
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>(".lightbox");
+  if (dialog) dialog.addEventListener("click", () => dialog.close());
+
+  document.querySelectorAll(".img-wrap").forEach((b) => {
+    const bImg = b.querySelector("img");
+    if (!bImg) return;
+
+    b.addEventListener("click", () => {
+      if (!dialog) return;
+
+      dialog.showModal();
+      const img = dialog.querySelector("img");
+      if (img) img.src = bImg.src;
+    });
+  });
+</script>

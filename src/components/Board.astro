@@ -1,0 +1,23 @@
+---
+const { ...props } = Astro.props;
+var _class = "cont";
+if (props.class) {
+  _class += " " + props.class;
+}
+---
+
+<div class={_class} {...props}>
+  <slot />
+</div>
+
+<style>
+  .cont {
+    padding: 5px 15px;
+    background-color: var(--bg3);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .cont:hover {
+    transform: translateY(-3px) translateX(-2px);
+  }
+</style>

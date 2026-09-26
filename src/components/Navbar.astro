@@ -1,0 +1,50 @@
+---
+import "../styles/global.css";
+import { Image } from "astro:assets";
+import crolbarImage from "../images/crolbar1.png";
+---
+
+<div class="navbar">
+  <a href="/">
+    <Image
+      class="img"
+      src={crolbarImage}
+      style={{
+        width: "70px",
+        height: "70px",
+        "z-index": 1,
+      }}
+      alt="crolbar-image"
+    />
+  </a>
+
+  <div class="nav-cont">
+    <a href="/posts">Posts</a>
+    <a href="/projects">Projects</a>
+  </div>
+</div>
+
+<style>
+  .navbar {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    width: 90%;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-cont {
+    align-self: center;
+    display: flex;
+    gap: 30px;
+    a {
+      color: var(--fg);
+    }
+  }
+  @media (max-width: 600px) {
+    .navbar {
+      margin-bottom: 80px;
+    }
+  }
+</style>

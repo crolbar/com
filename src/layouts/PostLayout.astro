@@ -1,0 +1,188 @@
+---
+import readingTime from "reading-time";
+import "../styles/global.css";
+import Head from "../components/Head.astro";
+import Theme, { themeToCss } from "../lib/theme.ts";
+import Footer from "../components/Footer.astro";
+import BackArrowImg from "../images/back-arrow-svg.astro";
+const { frontmatter, rawContent } = Astro.props;
+const minsToRead = Math.ceil(readingTime(rawContent()).minutes);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head title={frontmatter.title} />
+  </head>
+  <body style={themeToCss(Theme)}>
+    <div class="header-cont">
+      <a href="/posts" class="back-arrow">
+        <BackArrowImg />
+      </a>
+      <h1 class="header-title">{frontmatter.title}</h1>
+      <div class="header-info-cont">
+        <date class="date">Published {frontmatter.publicationDate}</date>
+        <span>{minsToRead} mins read</span>
+        <span class="status">{frontmatter.finished ? "" : "Draft"}</span>
+      </div>
+    </div>
+    <div class="post-cont">
+      <slot />
+    </div>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--fg);
+
+    --size-w: 40px;
+    --size-h: var(--size-w);
+
+    background:
+      radial-gradient(ellipse, var(--bg2) 15%, transparent 0%) top left /
+        var(--size-w) var(--size-h) repeat,
+      var(--bg);
+
+    --ruler: 80ch;
+  }
+
+  .header-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+
+    .back-arrow {
+      position: absolute;
+      right: clamp(1rem, calc(((100% - var(--ruler)) / 2) - 4rem), 100%);
+      top: 5.8rem;
+    }
+
+    .header-title {
+    }
+    .header-info-cont {
+      display: flex;
+      width: var(--ruler);
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      font-size: 1.1rem;
+      color: var(--fg2);
+      .date {
+      }
+      span {
+        border-left: solid 1px var(--fg2);
+        padding-left: 1rem;
+      }
+    }
+  }
+
+  .post-cont {
+    width: var(--ruler);
+    max-width: calc(95vw - 4rem);
+    margin: 0 auto;
+    padding: 1rem 3rem;
+    min-height: 100vh;
+    background-color: var(--bg3);
+    word-wrap: break-word;
+
+    h2 {
+      color: var(--fg);
+      border-bottom: solid 1px var(--fg2);
+      padding-bottom: 0.5rem;
+    }
+
+    code {
+      padding: 0.2em 0.4em;
+      font-size: 85%;
+      color: var(--fg1);
+    }
+
+    .astro-code {
+      code {
+        padding: 0;
+        font-size: 100%;
+      }
+      padding: 1rem;
+      border: solid 1px var(--fg3);
+    }
+
+    code,
+    .astro-code {
+      background-color: var(--bg5) !important;
+    }
+
+    a {
+      color: lightsteelblue;
+    }
+
+    blockquote {
+      margin: 0;
+      background-color: var(--bg6) !important;
+      padding: 0.5rem 0.6rem;
+      color: var(--fg1);
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    ol,
+    ul {
+      margin-top: 0;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    table {
+      width: max-content;
+      max-width: 100%;
+      overflow: auto;
+      margin: 0 0 16px;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+      padding: 6px 13px;
+      border: 1px solid var(--bg6);
+    }
+
+    summary {
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .post-cont {
+      padding: 1rem 2rem;
+    }
+
+    .header-cont {
+      .header-info-cont {
+        width: min(95%, 40ch);
+      }
+
+      .back-arrow {
+        right: 1rem;
+      }
+    }
+    body {
+      --ruler: 40ch;
+    }
+  }
+</style>

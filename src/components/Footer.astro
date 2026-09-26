@@ -1,0 +1,63 @@
+---
+import { commitHash, commitDate } from "../lib/footer-info.ts";
+import MailImg from "../images/mail-svg.astro";
+import GithubImg from "../images/github-svg.astro";
+import Data from "../lib/data.ts";
+const commitURL = `https://github.com/crolbar/com/commit/${commitHash()}`;
+---
+
+<footer>
+  <div class="links-cont">
+    <div class="email-cont">
+      <MailImg />
+      {Data.email}
+    </div>
+
+    <a href={Data.github}>
+      <GithubImg />
+    </a>
+  </div>
+  <div class="commit-cont">
+    Last update
+    <a href={commitURL}>{` ${commitHash()} `}</a>@ {commitDate()}
+  </div>
+  <div class="cpr-cont">copyright 2025-2026 crolbar</div>
+</footer>
+
+<style>
+  footer {
+    padding-top: 5rem;
+    margin-inline: auto;
+    width: 80%;
+    font-size: 0.8rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .email-cont {
+    display: flex;
+    align-items: center;
+  }
+
+  .links-cont {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+  }
+  .commit-cont {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    a {
+      white-space: pre;
+    }
+  }
+  .cpr-cont {
+    padding: 10px;
+    color: var(--fg1);
+  }
+</style>
