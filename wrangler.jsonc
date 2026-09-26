@@ -5,6 +5,7 @@
 		"global_fetch_strictly_public"
 	],
 	"name": "com",
+	"main": "./worker.js",
 	"assets": {
 		"directory": "./dist"
 	},
